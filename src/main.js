@@ -10,6 +10,7 @@ import { faClock } from '@fortawesome/free-regular-svg-icons'
 import { faThumbsUp  as farThumbsUp} from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 axios.defaults.withCredentials = true
+console.log(process.env.BASE_URL)
 axios.defaults.baseURL = process.env.BASE_URL || 'http://localhost:8080';
 axios.interceptors.response.use(undefined, function (error) {
   if (error) {
