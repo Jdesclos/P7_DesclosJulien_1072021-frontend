@@ -10,7 +10,7 @@ import { faClock } from '@fortawesome/free-regular-svg-icons'
 import { faThumbsUp  as farThumbsUp} from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 axios.defaults.withCredentials = true
-axios.defaults.baseURL = process.env.BASE_URL /*|| 'http://localhost:8080'*/;
+axios.defaults.baseURL = "https://groupomaniadesclos.herokuapp.com/"/*|| 'http://localhost:8080'*/;
 console.log(axios.defaults)
 axios.interceptors.response.use(undefined, function (error) {
   if (error) {
