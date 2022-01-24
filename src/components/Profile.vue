@@ -31,9 +31,9 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <button type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>
+                        <button @click="myToggleFunction" type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>
                     </div>
-                    <!-- <div class="col-md-12">
+                    <div v-show="toggleEditProfile" class="col-md-12">
                         <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="user-tab">
                             <div class="form-group">
                                  <label class="sr-only" for="user">Username</label>
@@ -65,7 +65,7 @@
                             </div>
                         </div>
                         <button type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>
-                    </div> -->
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4">
@@ -135,12 +135,13 @@ export default {
   },
   data() {
     return {
-      form: {
-        username: '',
-        email: '',
-        profession:'',
-        bio:'',
-      },
+        toggleEditProfile:false,
+        form: {
+            username: '',
+            email: '',
+            profession:'',
+            bio:'',
+        },
     };
 },
  created: function () {
@@ -152,7 +153,15 @@ export default {
   },
    methods: {
     ...mapActions(["GetProfile", "updateProfile", "GetPostsById"]),
+    myToggleFunction(){
+        if(!this.toggleEditProfile){
+            this.toggleEditProfile = true;
+            return this.toggleEditProfile
+        }else{
+            return this.toggleEditProfile= false;
+        }
    }
+}
 }
 </script>
 <style scoped>
