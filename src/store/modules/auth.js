@@ -59,7 +59,6 @@ const actions = {
         await dispatch('GetPosts',token)
       },
       async CreateComment({dispatch}, post) {
-        console.log(post)
         const vuex = JSON.parse(localStorage.getItem('vuex'));
         const token = vuex.auth.token;
         const userId = vuex.auth.userId;
@@ -83,8 +82,7 @@ const actions = {
           url:'/api/home',
           headers:{'Authorization': `Bearer ${token}`},
         }) 
-        commit('setPosts', response.data)
-
+        commit('setPosts', response.data);
       },
       async GetPostsById({ commit },username){
         const vuex = JSON.parse(localStorage.getItem('vuex'));
@@ -101,12 +99,28 @@ const actions = {
       async GetProfile({ commit }, id){
         const vuex = JSON.parse(localStorage.getItem('vuex'));
         const token = vuex.auth.token;
+        
         let response = await axios({
           method:'get',
           url:`/api/profile/${id}`,
           headers:{'Authorization': `Bearer ${token}`},
         }) 
         commit('setProfile', response.data)
+        
+
+      },
+      async EditProfile({ dispatch },{commit},profileUpdate){
+        const vuex = JSON.parse(localStorage.getItem('vuex'));
+        const token = vuex.auth.token;
+        const User = vuex.auth.profile.username;
+        await axios({
+          method:'put',
+          url:`/api/users/${profileUpdate.id}`,
+          headers:{'Authorization': `Bearer ${token}`},
+          data: profileUpdate,
+        }) 
+        await dispatch('getProfile',token);
+        await commit('setUser',User)
 
       },
       async LogOut({commit}){

@@ -31,19 +31,13 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <button @click="myToggleFunction" type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>
+                        <button v-if="User == Profile.username" @click.prevent="myToggleFunction()" class="btn-primary btn-profile" >Edit profile</button>
                     </div>
                     <div v-show="toggleEditProfile" class="col-md-12">
                         <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="user-tab">
                             <div class="form-group">
                                  <label class="sr-only" for="user">Username</label>
                                 <input v-model="form.username" type="username" class="form-control" id="username" rows="3" placeholder="Ecrivez votre nouveau username">
-                            </div>
-                        </div>
-                        <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="user-tab">
-                            <div class="form-group">
-                                 <label class="sr-only" for="user">Email</label>
-                                <input v-model="form.email" type="email" class="form-control" id="email" rows="3" placeholder="Ecrivez votre nouvel email">
                             </div>
                         </div>
                         <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="user-tab">
@@ -64,7 +58,7 @@
                                 <textarea v-model="form.bio" class="form-control" id="bio" rows="3" :placeholder="`${Profile.bio}`"></textarea>
                             </div>
                         </div>
-                        <button type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>
+                        <button @click.prevent="submitProfile()" class="profile-edit-btn" name="btnAddMore" value="Edit Profile">Enregistrer les nouvelles informations</button>
                     </div>
                 </div>
                 <div class="row">
@@ -106,7 +100,7 @@
                                                 <label>Profession</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <p>Web Developer and Designer</p>
+                                                <p>{{Profile.profession}}</p>
                                             </div>
                                         </div>
                             </div>
@@ -138,7 +132,6 @@ export default {
         toggleEditProfile:false,
         form: {
             username: '',
-            email: '',
             profession:'',
             bio:'',
         },
@@ -152,7 +145,7 @@ export default {
     ...mapGetters({Profile: "StateProfile"}),
   },
    methods: {
-    ...mapActions(["GetProfile", "updateProfile", "GetPostsById"]),
+    ...mapActions(["GetProfile", "EditProfile", "GetPostsById"]),
     myToggleFunction(){
         if(!this.toggleEditProfile){
             this.toggleEditProfile = true;
@@ -160,7 +153,22 @@ export default {
         }else{
             return this.toggleEditProfile= false;
         }
-   }
+   },
+   async submitProfile() {
+      try {
+          const profileUpdate = {
+              username:this.form.username,
+              password:this.form.password,
+              bio:this.form.bio,
+              profession:this.form.profession,
+              id:this.$route.query.id
+          };
+        await this.EditProfile(profileUpdate)
+      } catch (error) {
+        throw "Sorry you can't make a post now!"
+      }
+      this.myToggleFunction();
+    },
 }
 }
 </script>
