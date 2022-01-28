@@ -17,7 +17,7 @@
                                         {{Profile.username}}
                                     </h5>
                                     <h6>
-                                        {{Profile.profession}}
+                                        {{Profile.profession}}                                        
                                     </h6>
                                     
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -142,7 +142,7 @@ export default {
     this.GetProfile(this.$route.query.id);
   },
   computed: {
-    ...mapGetters({Profile: "StateProfile"}),
+    ...mapGetters({Profile: "StateProfile", User: "StateUser"}),
   },
    methods: {
     ...mapActions(["GetProfile", "EditProfile", "GetPostsById"]),
