@@ -1,6 +1,6 @@
 <template>
   <div id="nav" class="navbar navbar-expand  ">
-    <router-link to="/" class="col-sm-6 text-left"> <img src="../assets/icon-left-font-monochrome-white.svg"></router-link>
+    <router-link to="/home" class="col-sm-6 text-left"> <img class="img-responsive w-100 h-auto" src="../assets/icon-left-font-monochrome-white.svg"></router-link>
     <span class="col-sm-6 text-right" v-if="isLoggedIn">
       <router-link to="/home">Home</router-link>
       <a @click="logout">Logout</a>

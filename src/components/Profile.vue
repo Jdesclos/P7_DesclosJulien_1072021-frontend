@@ -134,6 +134,7 @@ export default {
             username: '',
             profession:'',
             bio:'',
+            password:''
         },
     };
 },
@@ -155,15 +156,8 @@ export default {
         }
    },
    async submitProfile() {
-      try {
-          const profileUpdate = {
-              username:this.form.username,
-              password:this.form.password,
-              bio:this.form.bio,
-              profession:this.form.profession,
-              id:this.$route.query.id
-          };
-        await this.EditProfile(profileUpdate)
+       try {
+        await this.EditProfile(this.form)
       } catch (error) {
         throw "Sorry you can't make a post now!"
       }

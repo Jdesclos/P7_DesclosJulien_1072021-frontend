@@ -4,7 +4,7 @@
             <div class="col-md-3">
                 <div class="card">
                     <div v-if="User" class="card-body">
-                        <div class="h5 d-flex"><p class="mr-2">Bonjour</p><a @click="goToProfile(UserId)">@{{User}}</a></div>
+                        <div class="h5 d-inline-block"><p class="mr-2 d-inline-block">Bonjour</p><a class="d-inline-block" @click="goToProfile(UserId)">@{{User}}</a></div>
                         <!-- <div class="h7">{{infoUser.bio}} -->
                         <!-- </div> -->
                     </div>
@@ -70,7 +70,7 @@
                                     <div class="text-muted ml-auto h7"><font-awesome-icon :icon="['far', 'clock']" />{{post.updatedAt | formatDate}}</div>
                     </div>
                     <div class="card-body">
-                        <img v-if="post.attachment !== ''" class="aside img-responsive mb-4 w-100 h-auto" :src="post.attachment"/>
+                        <img v-if="post.attachment !== ''" class="aside img-responsive mb-4 w-100 h-auto mw-100 mh-100" :src="post.attachment"/>
                         <p class="card-text">{{post.content}}</p>
                     </div>
                     <div class="card-footer d-flex justify-content-between align-items-center">
@@ -163,7 +163,7 @@ export default {
       } catch (error) {
         throw "Sorry you can't make a post now!"
       }
-
+      this.formComment = "";
     },
     async addLike(id){
       try {
