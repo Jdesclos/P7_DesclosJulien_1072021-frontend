@@ -110,6 +110,23 @@ const actions = {
           await commit('setUser',User)
         }
       },
+      async GetProfileEdited({commit} ,profileUpdate){
+        const vuex = JSON.parse(localStorage.getItem('vuex'));
+        const token = vuex.auth.token;
+        const userId = vuex.auth.userId;
+        const id = profileUpdate.id;
+        const User = profileUpdate.username;      
+        let response = await axios({
+          method:'get',
+          url:`/api/profile/${id}`,
+          headers:{'Authorization': `Bearer ${token}`},
+        })
+        response.data.username = User
+        await commit('setProfile', response.data)
+        if(userId == vuex.auth.profile.id){
+          await commit('setUser',User)
+        }
+      },
       async EditProfile({ dispatch},profileUpdate){
         const vuex = JSON.parse(localStorage.getItem('vuex'));
         const token = vuex.auth.token;
@@ -119,14 +136,13 @@ const actions = {
         formData.append('password', profileUpdate.password)
         formData.append('profession', profileUpdate.profession)
         formData.append('bio', profileUpdate.bio)
-        await axios({
-          method:'put',
-          url:`/api/users/${profileUpdate.id}`,
-          headers:{'Authorization': `Bearer ${token}`},
-          data: formData,
-        }) 
-        await dispatch('getProfile',token);
-
+        await axios({        
+            method:'put',
+            url:`/api/users/${profileUpdate.id}`,
+            headers:{'Authorization': `Bearer ${token}`},
+            data: formData,
+          })
+        await dispatch('GetProfileEdited',profileUpdate);
       },
       async LogOut({commit}){
         let user = null

@@ -29,7 +29,7 @@
                     <div class="col-md-2">
                         <button v-if="User == Profile.username" @click.prevent="myToggleFunction()" class="btn-primary btn-profile" >Edit profile</button>
                     </div>
-                    <div v-show="toggleEditProfile" class="col-md-12">
+                    <div v-show="toggleEditProfile" class="col-md-12 m-5">
                         <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="user-tab">
                             <div class="form-group">
                                  <label class="sr-only" for="user">Username</label>
