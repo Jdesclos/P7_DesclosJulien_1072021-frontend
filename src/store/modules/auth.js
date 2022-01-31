@@ -98,17 +98,21 @@ const actions = {
       async GetProfile({ commit }, id){
         const vuex = JSON.parse(localStorage.getItem('vuex'));
         const token = vuex.auth.token;
+        const User = vuex.auth.profile.username;
+        const userId = vuex.auth.userId;       
         let response = await axios({
           method:'get',
           url:`/api/profile/${id}`,
           headers:{'Authorization': `Bearer ${token}`},
         }) 
-        commit('setProfile', response.data)
+        await commit('setProfile', response.data)
+        if(userId == vuex.auth.profile.id){
+          await commit('setUser',User)
+        }
       },
-      async EditProfile({ dispatch, commit },profileUpdate){
+      async EditProfile({ dispatch},profileUpdate){
         const vuex = JSON.parse(localStorage.getItem('vuex'));
         const token = vuex.auth.token;
-        const User = vuex.auth.profile.username;        
         const formData = new FormData()
         formData.append('profilePicture', profileUpdate.profilePicture)
         formData.append('username', profileUpdate.username)
@@ -122,7 +126,6 @@ const actions = {
           data: formData,
         }) 
         await dispatch('getProfile',token);
-        await commit('setUser',User)
 
       },
       async LogOut({commit}){
