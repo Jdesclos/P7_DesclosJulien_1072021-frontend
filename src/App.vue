@@ -3,7 +3,7 @@
     <NavBar />
     <router-view/>
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column" v-if="show">
-      <div class="texte_intro  col-md-4">
+      <div class="texte_intro col-sm_8 col-md-4">
         <h2 cla>Partagez, réagissez, communiquer</h2>
         <p>Participez à l'expérience Groupo-chat</p>
         <a class="btn btn-primary  align-self-center" @click="login"  role="button">Connexion</a>
