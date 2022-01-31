@@ -24,12 +24,29 @@ const getters = {
 
 const actions = {
     async Register({dispatch}, form) {
-        await axios.post('/api/users/register', form)
-        let UserForm = new FormData()
-        UserForm.append('email', form.email)
-        UserForm.append('password', form.password)
-        UserForm.append('username', form.username)
-        await dispatch('LogIn', UserForm)
+        let response =await axios.post('/api/users/register', form)
+        if (response.data){
+          let UserForm = {
+            email: response.data.email,
+            username: response.data.username,
+            password:form.password
+          }
+          await dispatch('LogInFromRegister', UserForm)
+        }else {
+          console.log('nop')
+        }
+      },
+      async LogInFromRegister({commit}, User) {
+        await axios.post('/api/users/login', User)
+        .then(function (response) {      
+          const token = response.data.token;
+          const userId = response.data.userId;
+          const isAdmin = response.data.isAdmin;
+          commit('setUserId', userId)
+          commit('setIsAdmin', isAdmin)
+          return commit('setToken', token)
+        })
+        await commit('setUser', User.username)
       },
       async LogIn({commit}, User) {
         await axios.post('/api/users/login', User)
