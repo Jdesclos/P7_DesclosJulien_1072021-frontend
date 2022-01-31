@@ -5,10 +5,6 @@
                     <div class="col-md-4">
                         <div v-if="Profile" class="profile-img">
                             <img :src="Profile.profilePicture" alt=""/>
-                            <div class="file btn btn-lg btn-primary">
-                                Change Photo
-                                <input type="file" name="file"/>
-                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -38,6 +34,14 @@
                             <div class="form-group">
                                  <label class="sr-only" for="user">Username</label>
                                 <input v-model="form.username" type="username" class="form-control" id="username" rows="3" placeholder="Ecrivez votre nouveau username">
+                            </div>
+                        </div>
+                        <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="user-tab">
+                            <div class="form-group text-left">
+                                <div class="file btn btn-lg">
+                                        Change Photo
+                                        <input @change="handleFileUpload( $event )" type="file" name="file"/>
+                                </div>
                             </div>
                         </div>
                         <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="user-tab">
@@ -89,6 +93,22 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
+                                                <label>Lastname</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{Profile.lastname}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Firstname</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{Profile.firstname}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
                                                 <label>Email</label>
                                             </div>
                                             <div class="col-md-6">
@@ -107,9 +127,8 @@
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <label>Your Bio</label><br/>
-                                        <p>Your detail description</p>
-                                        <p>{{Profile.bio}}</p>
+                                        <h3 class="title-minor">Your Bio</h3><br/>
+                                        <p class="bio">{{Profile.bio}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -134,7 +153,9 @@ export default {
             username: '',
             profession:'',
             bio:'',
-            password:''
+            password:'',
+            profilePicture:'',
+            id : ''
         },
     };
 },
@@ -147,6 +168,9 @@ export default {
   },
    methods: {
     ...mapActions(["GetProfile", "EditProfile", "GetPostsById"]),
+    handleFileUpload( event ){
+      this.form.profilePicture= event.target.files[0];
+    },
     myToggleFunction(){
         if(!this.toggleEditProfile){
             this.toggleEditProfile = true;
@@ -157,9 +181,10 @@ export default {
    },
    async submitProfile() {
        try {
+           this.form.id = this.$route.query.id;
         await this.EditProfile(this.form)
       } catch (error) {
-        throw "Sorry you can't make a post now!"
+        throw `${error}`
       }
       this.myToggleFunction();
     },
@@ -169,6 +194,12 @@ export default {
 <style scoped>
 body{
     background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+}
+.title-minor{
+    color: #0062cc;
+}
+.bio {
+    color: #495057 !important;
 }
 .emp-profile{
     padding: 3%;

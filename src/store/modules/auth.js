@@ -65,7 +65,6 @@ const actions = {
         const formData = new FormData();
         formData.append('content', post.content);
         formData.append('messageId', post.messageId);
-        console.log(formData)
         await axios({
           method:'post',
           url:'/api/home',
@@ -99,28 +98,31 @@ const actions = {
       async GetProfile({ commit }, id){
         const vuex = JSON.parse(localStorage.getItem('vuex'));
         const token = vuex.auth.token;
-        
+        const User = vuex.auth.profile.username;        
         let response = await axios({
           method:'get',
           url:`/api/profile/${id}`,
           headers:{'Authorization': `Bearer ${token}`},
         }) 
         commit('setProfile', response.data)
-        
-
+        await commit('setUser',User)
       },
-      async EditProfile({ dispatch },{commit},profileUpdate){
+      async EditProfile({ dispatch },profileUpdate){
         const vuex = JSON.parse(localStorage.getItem('vuex'));
         const token = vuex.auth.token;
-        const User = vuex.auth.profile.username;
+        const formData = new FormData()
+        formData.append('profilePicture', profileUpdate.profilePicture)
+        formData.append('username', profileUpdate.username)
+        formData.append('password', profileUpdate.password)
+        formData.append('profession', profileUpdate.profession)
+        formData.append('bio', profileUpdate.bio)
         await axios({
           method:'put',
           url:`/api/users/${profileUpdate.id}`,
           headers:{'Authorization': `Bearer ${token}`},
-          data: profileUpdate,
+          data: formData,
         }) 
         await dispatch('getProfile',token);
-        await commit('setUser',User)
 
       },
       async LogOut({commit}){

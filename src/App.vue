@@ -6,7 +6,7 @@
       <div class="texte_intro  col-md-4">
         <h2 cla>Partagez, réagissez, communiquer</h2>
         <p>Participez à l'expérience Groupo-chat</p>
-        <a class="btn btn-primary col-md-4 align-self-center" @click="login"  role="button">Connexion</a>
+        <a class="btn btn-primary  align-self-center" @click="login"  role="button">Connexion</a>
       </div>
     </div>
   </div>
