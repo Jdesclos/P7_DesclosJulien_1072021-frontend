@@ -8,6 +8,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faThumbsUp as fasThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { faClock } from '@fortawesome/free-regular-svg-icons'
 import { faThumbsUp  as farThumbsUp} from '@fortawesome/free-regular-svg-icons'
+import { faTimes} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 axios.defaults.withCredentials = true
 axios.defaults.baseURL ='https://groupomaniadesclos.herokuapp.com/';
@@ -23,7 +24,7 @@ axios.interceptors.response.use(undefined, function (error) {
     }
   }
 })
-library.add(fasThumbsUp, farThumbsUp, faClock);
+library.add(fasThumbsUp, farThumbsUp, faClock, faTimes);
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.filter('formatDate', function(value) {
   if (value) {

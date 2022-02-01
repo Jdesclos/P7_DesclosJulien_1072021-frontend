@@ -44,6 +44,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="user-tab">
+                            <div class="form-group">
+                                 <label class="sr-only" for="message">Bio</label>
+                                <textarea v-model="form.lastname" class="form-control" id="bio" rows="3" :placeholder="`${Profile.lastname}`"></textarea>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="user-tab">
+                            <div class="form-group">
+                                 <label class="sr-only" for="message">Bio</label>
+                                <textarea v-model="form.firstname" class="form-control" id="bio" rows="3" :placeholder="`${Profile.firstname}`"></textarea>
+                            </div>
+                        </div>
                         <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="user-tab">
                             <div class="form-group">
                                  <label class="sr-only" for="user">Mot de pass</label>
@@ -196,6 +208,8 @@ export default {
         toggleEditProfile:false,
         form: {
             username: '',
+            firstname:'',
+            lastname:'',
             profession:'',
             bio:'',
             password:'',

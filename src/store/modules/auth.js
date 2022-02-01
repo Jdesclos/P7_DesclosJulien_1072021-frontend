@@ -151,6 +151,8 @@ const actions = {
         const formData = new FormData()
         formData.append('profilePicture', profileUpdate.profilePicture)
         formData.append('username', profileUpdate.username)
+        formData.append('firstname', profileUpdate.firstname)
+        formData.append('lastname', profileUpdate.lastname)
         formData.append('password', profileUpdate.password)
         formData.append('profession', profileUpdate.profession)
         formData.append('bio', profileUpdate.bio)
