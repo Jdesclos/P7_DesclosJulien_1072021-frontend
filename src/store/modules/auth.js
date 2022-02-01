@@ -183,7 +183,7 @@ const actions = {
         const token = vuex.auth.token;
         await axios({
           method:'delete',
-          url:'/api/message/delete',
+          url:'/api/messages/delete',
           data:{idMessage},
           headers:{Authorization: `Bearer ${token}`}
         })
