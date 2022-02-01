@@ -1,6 +1,6 @@
 <template>
 <div class="container emp-profile">
-            <form method="post">
+            <form method="profilePosts">
                 <div class="row">
                     <div class="col-md-4">
                         <div v-if="Profile" class="profile-img">
@@ -134,8 +134,53 @@
                             </div>
                         </div>
                     </div>
+                    
                 </div>
-            </form>           
+            </form>
+            <div class="col-md-6 ml-auto mr-auto">
+                <!--- \\\\\\\profilePosts-->
+                <div v-for="profilePosts in ProfilePosts" :key="profilePosts.id" class="profilePosts_area mb-5">
+                    <h2  class="titleSeparate mb-5">Récemment Publiés Par {{Profile.username}}</h2>
+                  <div  class="card gedf-card"  v-bind:id="profilePosts.id">
+                    <div class="d-flex  align-items-center card-header">
+                                    <div><img class="rounded-circle mr-2" width="45" :src="profilePosts.profilePicture" alt=""></div>
+                                    <div class="h5 m-0 "><a @click="goToProfile(profilePosts.UserId)">@{{profilePosts.username}}</a></div>
+                                    <div class="text-muted ml-auto h7"><font-awesome-icon :icon="['far', 'clock']" />{{profilePosts.updatedAt | formatDate}}</div>
+                                    <div v-if="User == profilePosts.username || IsAdmin" class="ml-3"><button @click="deleteprofilePosts(profilePosts.id)"> <font-awesome-icon :icon="['fas', 'times']" /></button></div>
+                    </div>
+                    <div class="card-body">
+                        <img v-if="profilePosts.attachment !== ''" class="aside img-responsive mb-4 w-100 h-auto mw-100 mh-100" :src="profilePosts.attachment"/>
+                        <p class="card-text">{{profilePosts.content}}</p>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between align-items-center">
+                        <button  type="submit" class="btn liked p-2"  @click="addLike(profilePosts.id)" ><font-awesome-icon v-if="profilePosts.userLiked.includes(UserId)"  icon="thumbs-up" /><font-awesome-icon v-if="!profilePosts.userLiked.includes(UserId)" :icon="['far','thumbs-up']" /></button>
+                        <p class="p2 m-0" v-if="profilePosts.likes != 0 && profilePosts.likes !== null">Personnes ayant aimés ce profilePosts: {{profilePosts.likes}}</p>
+                        
+                    </div>
+                  <div class="d-flex align-items-center">
+                       <div class="form-group mt-3 flex-fill" id="comments" aria-labelledby="comments-tab">
+                                    <label class="sr-only" for="message">profilePosts</label>
+                                    <textarea v-model="formComment.content" class="form-control form-comment m-0" id="comment" rows="8" placeholder="Réagir au profilePosts">Réagir au au profilePosts</textarea>
+                        </div>
+                        <div class=" justify-content-arround m-3">
+                            <div class="btn-group">
+                                <button  @click="submitComment(profilePosts.id)" type="submit" class="btn btn-primary">Partager</button>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                         <div  v-for="comment in profilePosts.comments" :key="comment.id" class="card comment_space">
+                    <div  class="comment-header card-header d-flex align-items-center">
+                                        <img class="rounded-circle mr-2" width="45" :src="comment.profilePicture" alt="">
+                                        <div class="h5 m-0"><a @click="goToProfile(comment.UserId)">@{{comment.username}}</a></div>
+                                        <div class=" ml-auto text-muted h7"> <font-awesome-icon :icon="['far', 'clock']" />{{comment.updatedAt | formatDate}}</div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{comment.content}}</p>
+                        </div>
+                  </div>
+                </div>
+            </div>      
         </div>
 </template>
 <script>
@@ -157,17 +202,21 @@ export default {
             profilePicture:'',
             id : ''
         },
+        formComment: {
+        content: '',
+      }
     };
 },
  created: function () {
-    // a function to call getposts action
+    // a function to call getprofilePostss action
     this.GetProfile(this.$route.query.id);
+    this.GetProfilePostsById(this.$route.query.id);
   },
   computed: {
-    ...mapGetters({Profile: "StateProfile", User: "StateUser"}),
+    ...mapGetters({Comments:"StateComments",Profile: "StateProfile", User: "StateUser",ProfilePosts: "StateProfilePosts", IsAdmin:"StateIsAdmin"}),
   },
    methods: {
-    ...mapActions(["GetProfile", "EditProfile", "GetPostsById"]),
+    ...mapActions(["GetProfile", "EditProfile", "GetProfilePostsById","CreateComment"]),
     handleFileUpload( event ){
       this.form.profilePicture= event.target.files[0];
     },
@@ -187,6 +236,15 @@ export default {
         throw `${error}`
       }
       this.myToggleFunction();
+    },
+    async submitComment(id) {  
+      try {
+          this.formComment.messageId = id;
+        await this.CreateComment(this.formComment)
+      } catch (error) {
+        throw "Sorry you can't make a post now!"
+      }
+      this.formComment = "";
     },
 }
 }

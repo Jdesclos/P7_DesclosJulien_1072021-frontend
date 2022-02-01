@@ -6,6 +6,7 @@ const state = {
     userId: null,
     profile:null,
     isAdmin:null,
+    profilePosts: null
   };
   
 const getters = {
@@ -19,7 +20,8 @@ const getters = {
     StateProfile: state => state.profile,
     StateToken: state => state.token,
     StateUserId: state => state.userId,
-    SateIsAdmin: state => state.isAdmin,
+    StateIsAdmin: state => state.isAdmin, 
+    StateProfilePosts: state => state.profilePosts
 };
 
 const actions = {
@@ -100,16 +102,15 @@ const actions = {
         }) 
         commit('setPosts', response.data);
       },
-      async GetPostsById({ commit },username){
+      async GetProfilePostsById({ commit },userId){
         const vuex = JSON.parse(localStorage.getItem('vuex'));
         const token = vuex.auth.token;
         let response = await axios({
           method:'get',
-          url:'/api/home',
-          data: username,
+          url:`/api/profile/messages/${userId}`,
           headers:{'Authorization': `Bearer ${token}`},
         }) 
-        commit('setPosts', response.data)
+        commit('setProfilePosts', response.data)
 
       },
       async GetProfile({ commit }, id){
@@ -176,8 +177,18 @@ const actions = {
           headers:{Authorization: `Bearer ${token}`}
         })  
         await dispatch('GetPosts',token)
-      }
-      
+      },
+      async DeletePost({dispatch}, idMessage)     {
+        const vuex = JSON.parse(localStorage.getItem('vuex'));
+        const token = vuex.auth.token;
+        await axios({
+          method:'delete',
+          url:'/api/message/delete',
+          data:{idMessage},
+          headers:{Authorization: `Bearer ${token}`}
+        })
+        await dispatch('GetPosts',token)
+      } 
 };
 const mutations = {
         setUser(state, username){
@@ -194,6 +205,9 @@ const mutations = {
         },
         setPosts(state, posts){
             state.posts = posts
+        },
+        setProfilePosts(state, profilePosts){
+          state.profilePosts = profilePosts
         },
         setToken(state, token){
           state.token = token

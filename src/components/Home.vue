@@ -65,9 +65,10 @@
                 <div v-for="post in Posts" :key="post.id" class="post_area mb-5">
                   <div  class="card gedf-card"  v-bind:id="post.id">
                     <div class="d-flex  align-items-center card-header">
-                                    <img class="rounded-circle mr-2" width="45" :src="post.profilePicture" alt="">
+                                    <div><img class="rounded-circle mr-2" width="45" :src="post.profilePicture" alt=""></div>
                                     <div class="h5 m-0 "><a @click="goToProfile(post.UserId)">@{{post.username}}</a></div>
                                     <div class="text-muted ml-auto h7"><font-awesome-icon :icon="['far', 'clock']" />{{post.updatedAt | formatDate}}</div>
+                                    <div v-if="User == post.username || IsAdmin" class="ml-3"><button @click="deletePost(post.id)"> <font-awesome-icon :icon="['fas', 'times']" /></button></div>
                     </div>
                     <div class="card-body">
                         <img v-if="post.attachment !== ''" class="aside img-responsive mb-4 w-100 h-auto mw-100 mh-100" :src="post.attachment"/>
@@ -141,10 +142,10 @@ export default {
     this.GetPosts()
   },
   computed: {
-    ...mapGetters({Posts: "StatePosts", User: "StateUser", Token:"StateToken", Comments:"StateComments", UserId: "StateUserId"}),
+    ...mapGetters({Posts: "StatePosts", User: "StateUser", Token:"StateToken", Comments:"StateComments", UserId: "StateUserId", IsAdmin:"StateIsAdmin"}),
   },
   methods: {
-    ...mapActions(["CreatePost", "GetPosts","CreateComment","LikePost"]),
+    ...mapActions(["CreatePost", "GetPosts","CreateComment","LikePost","DeletePost"]),
     handleFileUpload( event ){
       this.form.attachment = event.target.files[0];
     },
@@ -175,6 +176,13 @@ export default {
     },
     goToProfile(id){
       this.$router.push({name:'Profile', query:{id: `${id}`}, param:{id: `${id}`}});
+    },
+    async deletePost(id){
+      try {
+        await this.DeletePost(id)
+      } catch (error){
+        throw `${error}`
+      }
     }
 },
 };
