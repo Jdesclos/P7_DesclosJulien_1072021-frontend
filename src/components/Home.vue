@@ -145,7 +145,7 @@ export default {
     ...mapGetters({Posts: "StatePosts", User: "StateUser", Token:"StateToken", Comments:"StateComments", UserId: "StateUserId", IsAdmin:"StateIsAdmin"}),
   },
   methods: {
-    ...mapActions(["CreatePost", "GetPosts","CreateComment","LikePost","DeletePost"]),
+    ...mapActions(["CreatePost", "GetPosts","CreateComment","LikePost","DeletePost"]),//permet d'utiliser ces actions dans les methods
     handleFileUpload( event ){
       this.form.attachment = event.target.files[0];
     },
@@ -175,12 +175,12 @@ export default {
       }
     },
     goToProfile(id){
-      this.$router.push({name:'Profile', query:{id: `${id}`}, param:{id: `${id}`}});
+      this.$router.push({name:'Profile', query:{id: `${id}`}, param:{id: `${id}`}});//redirection vers home
     },
     async deletePost(id){
       try {
         let reponse = window.confirm("Voulez vous vraiment supprimer ce message ?");
-        if(reponse){
+        if(reponse){//si l'utilisateur appuie sur ok ça delete
           await this.DeletePost(id)
         }
       } catch (error){

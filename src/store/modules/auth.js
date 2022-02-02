@@ -64,8 +64,8 @@ const actions = {
       },
       async CreatePost({dispatch}, post) {
         const vuex = JSON.parse(localStorage.getItem('vuex'));
-        const token = vuex.auth.token;
-        const userId = vuex.auth.userId;
+        const token = vuex.auth.token;//on récupère le token stocker en local storage
+        const userId = vuex.auth.userId;//on récupère l'userId stocker en local storage
         const formData = new FormData()
         formData.append('image', post.attachment)
         formData.append('content', post.content)
@@ -90,7 +90,7 @@ const actions = {
           data:formData, userId,
           headers:{Authorization: `Bearer ${token}`}
         })         
-        await dispatch('GetPosts',token)
+        await dispatch('GetPosts',token)//dispatch appelle une autre fonction à executer
       },
       async GetPosts({ commit }){
         const vuex = JSON.parse(localStorage.getItem('vuex'));
@@ -100,7 +100,7 @@ const actions = {
           url:'/api/home',
           headers:{'Authorization': `Bearer ${token}`},
         }) 
-        commit('setPosts', response.data);
+        commit('setPosts', response.data);//commit met à jour les states
       },
       async GetProfilePostsById({ commit },userId){
         const vuex = JSON.parse(localStorage.getItem('vuex'));
@@ -190,6 +190,17 @@ const actions = {
           headers:{Authorization: `Bearer ${token}`}
         })
         await dispatch('GetPosts',token)
+      },
+      async DeleteProfile({dispatch},idUser)     {
+        const vuex = JSON.parse(localStorage.getItem('vuex'));
+        const token = vuex.auth.token;
+        await axios({
+          method:'delete',
+          url:`/api/users/${idUser}`,
+          data:{idUser},
+          headers:{Authorization: `Bearer ${token}`}
+        })
+        await dispatch('LogOut')
       } 
 };
 const mutations = {

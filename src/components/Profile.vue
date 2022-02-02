@@ -80,6 +80,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="profile-work">
+                            <a v-if="UserId == Profile.id" @click.prevent="deleteProfile()" href="">Supprimer son compte</a><br/>
                             <p>WORK LINK</p>
                             <a href="">Website Link</a><br/>
                             <a href="">Bootsnipp Profile</a><br/>
@@ -222,18 +223,18 @@ export default {
     };
 },
  created: function () {
-    // a function to call getprofilePostss action
+//charge les fonctions à la création de la page
     this.GetProfile(this.$route.query.id);
     this.GetProfilePostsById(this.$route.query.id);
   },
   computed: {
-    ...mapGetters({Comments:"StateComments",Profile: "StateProfile", User: "StateUser",ProfilePosts: "StateProfilePosts", IsAdmin:"StateIsAdmin"}),
+    ...mapGetters({Comments:"StateComments",Profile: "StateProfile",UserId: "StateUserId", User: "StateUser",ProfilePosts: "StateProfilePosts", IsAdmin:"StateIsAdmin"}),//charge les getters du store
   },
    methods: {
-    ...mapActions(["GetProfile", "EditProfile", "GetProfilePostsById","CreateComment"]),
+    ...mapActions(["GetProfile", "EditProfile", "GetProfilePostsById","CreateComment","DeleteProfile","DeletePost","LogOut"]),//charge les fonctions "actions" du store
     handleFileUpload( event ){
       this.form.profilePicture= event.target.files[0];
-    },
+    },//fonction pour afficher un bout de code ou non à l'appui sur le boutton
     myToggleFunction(){
         if(!this.toggleEditProfile){
             this.toggleEditProfile = true;
@@ -260,6 +261,28 @@ export default {
       }
       this.formComment = "";
     },
+    async deletePost(id){
+      try {
+        let reponse = window.confirm("Voulez vous vraiment supprimer ce message ?");
+        if(reponse){//si l'utilisateur appuie sur ok ça delete
+          await this.DeletePost(id)
+        }
+      } catch (error){
+        throw `${error}`
+      }
+    },
+    async deleteProfile(){        
+      try {
+        let id = this.$route.query.id;
+        let reponse = window.confirm("Voulez vous vraiment supprimer votre compte ?");
+        if(reponse){//si l'utilisateur appuie sur ok ça delete
+            await this.DeleteProfile(id)
+            this.$router.push('/login');
+        }
+      } catch (error){
+        throw `${error}`
+      }
+    }
 }
 }
 </script>

@@ -26,7 +26,7 @@ axios.interceptors.response.use(undefined, function (error) {
 })
 library.add(fasThumbsUp, farThumbsUp, faClock, faTimes);
 Vue.component('font-awesome-icon', FontAwesomeIcon)
-Vue.filter('formatDate', function(value) {
+Vue.filter('formatDate', function(value) {//formate la date
   if (value) {
     return moment(String(value)).format('MM/DD/YYYY hh:mm')
   }
