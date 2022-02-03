@@ -159,7 +159,7 @@
                                     <div><img class="rounded-circle mr-2" width="45" :src="profilePosts.profilePicture" alt=""></div>
                                     <div class="h5 m-0 "><a @click="goToProfile(profilePosts.UserId)">@{{profilePosts.username}}</a></div>
                                     <div class="text-muted ml-auto h7"><font-awesome-icon :icon="['far', 'clock']" />{{profilePosts.updatedAt | formatDate}}</div>
-                                    <div v-if="User == profilePosts.username || IsAdmin" class="ml-3"><button @click="deleteprofilePosts(profilePosts.id)"> <font-awesome-icon :icon="['fas', 'times']" /></button></div>
+                                    <div v-if="User == profilePosts.username || IsAdmin" class="ml-3"><button class="del" @click="deleteprofilePosts(profilePosts.id)"> <font-awesome-icon :icon="['fas', 'times']" /></button></div>
                     </div>
                     <div class="card-body">
                         <img v-if="profilePosts.attachment !== ''" class="aside img-responsive mb-4 w-100 h-auto mw-100 mh-100" :src="profilePosts.attachment"/>
@@ -309,6 +309,9 @@ body{
 .profile-img img{
     width: 70%;
     height: 100%;
+}
+.del{
+  border:none;
 }
 .profile-img .file {
     position: relative;

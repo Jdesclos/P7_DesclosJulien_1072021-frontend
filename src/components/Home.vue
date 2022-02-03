@@ -108,7 +108,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Nouvelles</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Votre réseau social d'entreprise est là</h6>
-                        <p class="card-text">Amusez vous à poster des messages sur votre tout nouveau réseau social dans l'entreprise</p>
+                        <p class="card-text">Merci à mon mentor Jean-Marc pour son accompagnement pendant toute la formation, ainsi qu'à tous mes proches pour leur soutient</p>
                     </div>
                 </div>
             </div>
